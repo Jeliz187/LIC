@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <?php
+    //Start the Session
+    session_start();
+    ?>
+
+    <?php
+        $host='earth.cs.utep.edu';
+        $user='cs_vosanchez';
+        $password='dogK9';
+        $database='cs_vosanchez';
+        $connection = mysql_connect($host, $user, $password);
+        if(!$connection){
+        die('Could not connect: '. mysql_error());
+        }
+        mysql_close($connection);
+        ?>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Latinas In Computing</a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Page 1</a></li>
+          <li><a href="#">Page 2</a></li>
+          <li><a href="#">Page 3</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <?php if($_POST['uname'] == 'admin' && $_POST['pass']== 'admin1'){ ?>
+                 <li><a href="reports.php"><span class="glyphicon glyphicon-list-alt"></span> Reports </a></li>
+                 <li><a href="signIn.php"><span class="glyphicon glyphicon-plus-sign"></span><span class="glyphicon glyphicon-user"></span> Add User </a></li>
+                 <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+               <?php  $_SESSION["isUser"] = TRUE;
+           }?>
+
+
+          <?php else if($_POST['uname'] == 'user' && $_POST['pass']== 'user1'){ ?>
+              <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+              <?php $_SESSION["isUser"] = TRUE;
+            }?>
+          <!-- If they are not a user they can Sign up-->
+          <?php if(!$_SESSION["isUser"]){ ?>
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <?php } ?>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <!--Jumbotron-->
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Latinas in Computing</h1>
+      </div>
+    </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Pardon our dust. Under Construction</h3>
+
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
