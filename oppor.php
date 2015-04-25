@@ -122,18 +122,23 @@ include_once ('jumbotron.php');
           </div>
         </div>
         <div class="row top5" >
-          <div class="col-md-6">
             <?php
             if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
 
                 // echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
 
+                echo '<div class="col-md-1">';
                 echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
+                echo '</div>';
 
+                echo '<div class="col-md-1">';
                 echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
+                echo '</div>';
             }
             else{
+              echo '<div class="col-md-1">';
               echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+              echo '</div>';
             }
             ?>
           </form>
