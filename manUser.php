@@ -83,7 +83,14 @@ $etype = $row['MType'];
 
 <body>
   <div class="container">
-    <h3>Member Sign Up</h3>
+    <?php
+    if($_POST["Submit1"]){
+      echo '<h3>New Member Sign Up</h3>';
+    }
+    else{
+      echo '<h3>Profile</h3>';
+    }
+    ?>
     <form action="manUser_BE.php" method = "POST" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-6">
@@ -315,30 +322,23 @@ $etype = $row['MType'];
         ?>
       </div>
 
-      <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
-        <tr>
-          <td width="246">
-          <input type="hidden" name="MAX_FILE_SIZE" value="9000000">
-          <input name="userfile" type="file" id="userfile">
-          </td>
-        <!-- <td width="80"><input name="upload" type="submit" class="box" id="upload" value=" Upload "></td> -->
-        </tr>
-      </table>
-
       <!-- Submit Button Group -->
-      <div class="row">
-        <div class = "col-md-3s">
+      <div class="row top5">
+        <div class = "col-md-3">
           <?php
-          if($_SESSION["usertype"] == 2){//type 2 is admin
-            echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
-            echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
-            echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+          if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
+
+              // echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+
+              echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
+
+              echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
           }
-          else if($_SESSION["usertype"] == 1){
-            echo '<button type="submit" class="btn btn-primary" name="edit" value="edit">Submit</button>';
+          else if($_POST["Submit2"]){
+            echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
           }
           else{
-            echo '<button type="submit" class="btn btn-primary" name="add" value="add">Submit</button>';
+            echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
           }
           ?>
         </div>
@@ -348,8 +348,7 @@ $etype = $row['MType'];
   </div> <!--CONTAINER-->
 </div>
 
-<div class="container">
-  <h3>Members Who Need Acceptance</h3>
+
 <?php
 if($_SESSION["usertype"] == 2){
   $sql5 = "SELECT * FROM Member WHERE MApproved = '0';";
@@ -357,7 +356,6 @@ if($_SESSION["usertype"] == 2){
   $result5 = mysql_query($sql5);
   if($result5->num_rows >= 0){
     ?>
-
     <form action= "manUser_BE.php" method = "POST">
       <table class="table table-striped" style="width:auto" id="opp">
         <thead>
@@ -376,11 +374,10 @@ if($_SESSION["usertype"] == 2){
         </thead>
         <tbody>
           <?php
-          $tempID=0;
           while($row5 = mysql_fetch_assoc($result5)){
             echo "<tr>";
             $mEmail =$row5["MEmail"];
-            echo "<td>".'<input type="checkbox" name="va[]" value="'.$mEmail.'">'."</td>";
+            echo "<td>".'<input type="checkbox" name="ve[]" value="'.$mEmail.'">'."</td>";
             echo "<td>".$mEmail."</td>";
             echo "<td>".$row5["MFname"]." ".$row["MLname"]."</td>";
             echo "<td>".$row5["MSocialID"]."</td>";
@@ -392,7 +389,6 @@ if($_SESSION["usertype"] == 2){
             echo "<td>".$row5["MCountryOfOrigin"]."</td>";
             echo "<td>".$row5["MDateofBirth"]."</td>";
             echo "</tr>";
-            $tempID++;
           }
           ?>
         </tbody>

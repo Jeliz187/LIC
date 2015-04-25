@@ -40,18 +40,39 @@
 
            <h2 class="form-signin-heading">Please sign in</h2>
 
-           <label for="inputUsername" class="sr-only">Email</label>
-           <input type="text" name="uname" class="form-control" placeholder="Email" required autofocus>
+           <div class="row top17">
+             <div class="col-sm-12">
+               <label for="inputUsername" class="sr-only">Email</label>
+               <input type="text" name="uname" class="form-control" placeholder="Email" required autofocus>
+             </div>
+           </div>
 
-           <label for="inputPassword" class="sr-only">Password</label>
-           <input type="password" name="pass" class="form-control" placeholder="Password" required>
+           <div class="row top17">
+             <div class="col-sm-12">
+               <label for="inputPassword" class="sr-only">Password</label>
+               <input type="password" name="pass" class="form-control" placeholder="Password" required>
+             </div>
+           </div>
 
-           <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+           <div class="row top17">
+             <div class="col-sm-4">
+               <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+             </div>
+           </div>
+
          </form>
-       </div>
+      </div>
        <div class="col-sm-4"></div>
 
+
+     </div><!--ROW-->
    </div> <!-- /container -->
+   
+   <footer class="pathway-footer top30">
+     <p><h4>Built by Pathway Inc.</h4></p>
+   </footer>
+
+
     <!-- <div id="header">
     <h1>Login</h1>
     </div>
@@ -70,8 +91,6 @@
 
 </body>
 
-<footer class="pathway-footer">
-  <p><h4>Built by Pathway Inc.</h4></p>
-</footer>
+
 
 </html>

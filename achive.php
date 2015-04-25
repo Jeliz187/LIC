@@ -52,31 +52,76 @@ session_start();
           <h1>ACHIEVEMENTS</h1>
         </div>
       </div>
+      <?php
+      //edit section
+      if(isset($_POST['select'])){
+        if(isset($_POST['va'])){
+          if (is_array($_POST['va'])) {
+            foreach($_POST['va'] as $value){
+              // echo $value."+";
+              $for = $value;
+            }
+          }
+        }
+        $s_aid = $for;
+        $search = "SELECT * FROM Achievement WHERE A_ID = '".$for."';";
+        // echo $search;//debug code $
+        $sre = mysql_query($search);
+        $row = mysql_fetch_assoc($sre);
+        //Adding new opportunity
+        $amEmail = $row['MEmail'];
+        $aType = $row['AType'];
+        $aDate = $row['ADate'];
+        $aID = $row['A_ID'];
+      }
+      ?>
 
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Add Achivement</h3>
+        </div>
+      </div>
       <?php
        if($_SESSION["usertype"] == "2"){ ?>
 
       <div class="row top30" >
         <div class="col-md-6">
-          <form action="achive.php" method = "POST">
+          <form action="achive_BE.php" method = "POST">
 
            <label for="aID">Achievement ID:</label>
-           <input type="text" class="form-control" id="aID" name = "aID">
+           <?php if($s_oid != ""){
+             echo '<input type="text" class="form-control" id="aID" name = "aID" value ='.$s_aid.' readonly>';
+           }else{
+             echo '<input type="text" class="form-control" id="aID" name = "aID" value ='.$s_aid.'>';
+           }
+           ?>
 
            <label for="aDate">Date:</label>
-          <input type="date" class="form-control" id="aDate" name = "aDate">
+          <input type="date" class="form-control" id="aDate" name = "aDate" value = <?php echo $aDate; ?>>
 
            <label for="aType">Type of Achivement:</label>
-           <input type="text" class="form-control" id="aType" name = "aType">
+           <input type="text" class="form-control" id="aType" name = "aType" value = <?php echo $aType; ?>>
 
            <label for="aEmail">Member Email:</label>
-           <input type="email" class="form-control" id="aEmail" name = "aEmail">
+           <input type="email" class="form-control" id="aEmail" name = "aEmail" value = <?php echo $amEmail; ?>>
          </div> <!--Column-->
         </div> <!--Row-->
 
        <div class="row top5" >
         <div class="col-md-6">
-          <button type="Submit" class="btn btn-primary" value="Submit">Add</button>
+          <?php
+          if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
+
+              // echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+
+              echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
+
+              echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
+          }
+          else{
+            echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+          }
+          ?>
           </form>
        </div> <!--Column-->
       </div> <!--Row-->
@@ -85,95 +130,51 @@ session_start();
 
        <?php
         //Adding new opportunity
-        $aEmail = $_POST['aEmail'];
-        $aType = $_POST['aType'];
-        $aDate = $_POST['aDate'];
-        $aID = $_POST['aID'];
-
-
-        $newA = "INSERT INTO Achievement VALUES ('".$aID."', '".$aDate."', '".$aType."', '".$aEmail."');";
-
-        echo $newAchievement;//debug code $
-        if($aID > 0){
-          mysql_query($newA);
-        }
+        // $aEmail = $_POST['aEmail'];
+        // $aType = $_POST['aType'];
+        // $aDate = $_POST['aDate'];
+        // $aID = $_POST['aID'];
+        //
+        //
+        // $newA = "INSERT INTO Achievement VALUES ('".$aID."', '".$aDate."', '".$aType."', '".$aEmail."');";
+        //
+        // echo $newAchievement;//debug code $
+        // if($aID > 0){
+        //   mysql_query($newA);
+        // }
 
 
           $sql = "SELECT * FROM Achievement";
           $result = mysql_query($sql);
-
           ?>
-
-          <div class="row top30">
-            <div class="col-md-12">
-              <!-- <form action= "achive.php" method = "POST"> -->
-                <div class="table-responsive">
-                  <table class="table table-striped" style="width:auto" id="opp">
-                    <thead>
-                      <tr>
-                        <!-- <th><input type="checkbox" name="everything" onClick="toggle(this)"></th> -->
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Email</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-
-                      while($row = mysql_fetch_assoc($result)){
-                        $row2 = mysql_fetch_assoc($result2);
-                        echo "<tr>";
-                        echo "<td>".$row["A_ID"]."</td>";
-                        echo "<td>".$row["ADate"]."</td>";
-                        echo "<td>".$row["AType"]."</td>";
-                        echo "<td>".$row["MEmail"]."</td>";
-                        echo "</tr>";
-                      }
-
-
-                      ?>
-                    </tbody>
-                  </table>
-
-                  <!-- <div class="row">
-                    <div class="col-md-2">
-                      <button type="submit" class="btn btn-danger btn-block" style="width:40%" value="Submit">Delete</button>
-                    </div>
-                  </div> -->
-
-                </div>
-              </form>
-            </div>
-          </div>
         </div>
 
 
       <?php
-      $forDel;
-      if(isset($_POST['ve'])){
-        if (is_array($_POST['ve'])) {
-          foreach($_POST['ve'] as $value){
-            //echo $value."+";
-            $forDel[] = $value;
-
-          }
-        } else {
-          $value = $_POST['ve'];
-          //echo $value."|";
-        }
-      }
-
-
-      $sqlForDel;
-      for($x=0; $x<count($forDel);$x++){
-        //$sql2 = 'DELETE FROM EVENT WHERE EID = "'.$forDel[$x].'";';
-        //echo $sql2;//debug code $
-        mysql_query($sql2);
-        //mysql_query($sql);
-        $sqlForDel[] = $sql;
-      //echo $forDel[$x]."|";//debug code $
-    }
+    //   $forDel;
+    //   if(isset($_POST['ve'])){
+    //     if (is_array($_POST['ve'])) {
+    //       foreach($_POST['ve'] as $value){
+    //         //echo $value."+";
+    //         $forDel[] = $value;
+    //
+    //       }
+    //     } else {
+    //       $value = $_POST['ve'];
+    //       //echo $value."|";
+    //     }
+    //   }
+    //
+    //
+    //   $sqlForDel;
+    //   for($x=0; $x<count($forDel);$x++){
+    //     //$sql2 = 'DELETE FROM EVENT WHERE EID = "'.$forDel[$x].'";';
+    //     //echo $sql2;//debug code $
+    //     mysql_query($sql2);
+    //     //mysql_query($sql);
+    //     $sqlForDel[] = $sql;
+    //   //echo $forDel[$x]."|";//debug code $
+    // }
 
       mysqli_close($connection);
       ?>

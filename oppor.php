@@ -43,39 +43,26 @@ include_once ('jumbotron.php');
   <body>
 
     <div class="container">
-
-
       <div class="row">
         <div class="col-md-12">
           <h1>OPPORTUNITIES</h1>
         </div>
       </div>
 
-<?php
-  if($_SESSION["usertype"] == 2){
-    ?>
-
-    <div class="row" >
-      <div class="col-md-4">
-        <form action="oppor.php" method = "POST">
-          <label for="o_id">Search ID :</label>
-          <input type="text" class="form-control"name = "sId">
-        </div>
-      </div>
-      <div class="row top5">
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-primary btn-block" style="width:20%" value="modify" name="modify">Modifiy</button>
-        </div>
-      </div>
-    </form>
-  <?php } ?>
-
   <?php
     //edit section
-    if(isset($_POST['modify'])){
-      $s_oid = $_POST['sId'];
+    if(isset($_POST['select'])){
+      if(isset($_POST['va'])){
+        if (is_array($_POST['va'])) {
+          foreach($_POST['va'] as $value){
+            // echo $value."+";
+            $for = $value;
+          }
+        }
+      }
+      $s_oid = $for;
       $search = "SELECT * FROM Opportunity WHERE O_ID = '".$s_oid."'";
-      //echo $search;
+      // echo $search;//debug code $
       $sre = mysql_query($search);
       $row = mysql_fetch_assoc($sre);
       $sType = $row["OType"];
@@ -84,7 +71,6 @@ include_once ('jumbotron.php');
       $sGPA = $row["OGPA"];
       $sRec = $row["OReccommendation"];
       $sDesc = $row["ODescription"];
-      $isEdit = true;
     }
   ?>
 
@@ -102,7 +88,12 @@ include_once ('jumbotron.php');
           <form action="oppor_BE.php" method = "POST">
 
             <label for="o_id">Opportunity ID :</label>
-            <input type="text" class="form-control" id="o_id" name = "o_id" value = <?php echo $s_oid; ?>>
+            <?php if($s_oid != ""){
+              echo '<input type="text" class="form-control" id="o_id" name = "o_id" value ='.$s_oid.' readonly>';
+            }else{
+              echo '<input type="text" class="form-control" id="o_id" name = "o_id" value ='.$s_oid.'>';
+            }
+            ?>
 
             <label for="oType">Type of Opportunity:</label>
             <input type="text" class="form-control" id="oType" name = "oType" value = <?php echo $sType; ?>>
@@ -128,17 +119,23 @@ include_once ('jumbotron.php');
 
             <label for="desc">Description:</label>
             <input type ="text" class="form-control" id="desc" name = "desc" value = <?php echo $sDesc; ?>>
-
-            <?php
-            if($isEdit){
-              echo '<input type="checkbox" name="o_edit" value="1">Confirm Edit';
-            }
-            ?>
           </div>
         </div>
         <div class="row top5" >
           <div class="col-md-6">
-            <button type="Submit" class="btn btn-primary" value="submit" name="submit">Add</button>
+            <?php
+            if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
+
+                // echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+
+                echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
+
+                echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
+            }
+            else{
+              echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+            }
+            ?>
           </form>
         </div>
       </div>
@@ -156,59 +153,6 @@ include_once ('jumbotron.php');
           }
         }
         </script>
-        <script type = "text/javascript">
-
-
-        </script>
-        <div class="row">
-          <div class="col-md-12">
-            <h3>Manage Opportunities</h3>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12">
-            <form action= "oppor_BE.php" method = "POST">
-              <div class="table-responsive">
-                <table class="table table-striped" style="width:auto" id="opp">
-                  <thead>
-                    <tr>
-                      <th><input type="checkbox" name="everything" onClick="toggle(this)"></th>
-                      <th>ID</th>
-                      <th>Type</th>
-                      <th>Start</th>
-                      <th>Application Deadline</th>
-                      <th>Required GPA</th>
-                      <th>Recommendation</th>
-                      <th>Created by</th>
-                      <th>Description</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    while($row = mysql_fetch_assoc($result)){
-                      echo "<tr>";
-                        $opp_id =$row["O_ID"];
-                        echo "<td>".'<input type="checkbox" name="ve[]" value="'.$opp_id.'" >'."</td>";
-                        echo "<td>".$opp_id."</td>";
-                        echo "<td>".$row["OType"]."</td>";
-                        echo "<td>".$row["OStart"]."</td>";
-                        echo "<td>".$row["OApp_dealine"]."</td>";
-                        echo "<td>".$row["OGPA"]."</td>";
-                        echo "<td>".$row["OReccommendation"]."</td>";
-                        echo "<td>".$row["MEmail"]."</td>";
-                        echo "<td>".$row["ODescription"]."</td>";
-                        echo "</tr>";
-                      }
-                      ?>
-                    </tbody>
-                  </table>
-                </div>
-                <button type="submit" class="btn btn-danger btn-block" style="width:20%" value="delete" name="delete">Delete</button>
-              </form>
-            </div>
-          </div>
-
       <?php
       $s_oid = $_POST['sId'];
       $search = "SELECT * FROM Opportunity WHERE O_ID = '".$s_oid."'";

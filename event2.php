@@ -63,64 +63,55 @@ $_SESSION["userType"] = "admin";
         </div>
       </div>
 
-  <?php if($_SESSION["usertype"] == "2"){?>
-    <form action="event2.php" method = "POST">
-
-      <label for="sId">Search ID :</label>
-      <input type="text" class="form-control"name = "sId">
-
-      <button type="submit" class="btn btn-default btn-block" style="width:20%" name = "mod" value="Submit3">Modifiy</button>
-    </form>
     <?php
     if(isset($_POST['select'])){
-      $forDel;
       if(isset($_POST['va'])){
         if (is_array($_POST['va'])) {
           foreach($_POST['va'] as $value){
             // echo $value."+";
-            $forDel[] = $value;
+            $for = $value;
           }
-        } else {
-          $forDel[] = $_POST['va'];
-          //echo $value."|";
         }
       }
-    $s_eid = $_POST['sId'];
+    $s_eid = $for;
     $search = "SELECT * FROM Event WHERE E_ID = '".$s_eid."'";
-    $search2 = "SELECT * FROM Sposored_By WHERE E_ID = '".$s_eid."'";
+
     // echo $search;debug code $
     $sre = mysql_query($search);
     $row = mysql_fetch_assoc($sre);
     $sName = $row['EName'];
     $sVenue = $row['EVenue'];
+    // echo $sVenue;debug code $
     $sDate = $row['EDate'];
     $sTime = $row['ETime'];
     $sRsvp = $row['ERSVP'];
     $sDetail = $row['EDetail'];
 
+    $search2 = "SELECT * FROM Sponsored_By WHERE E_ID = '".$s_eid."'";
     $sre2 = mysql_query($search2);
     $row2 = mysql_fetch_assoc($sre2);
     $s_sEmail = $row2['SEmail'];
 
     $search3 = "SELECT * FROM Sponsor WHERE SEmail = '".$s_sEmail."'";
-
     $sre3 = mysql_query($search3);
     $row3 = mysql_fetch_assoc($sre3);
     $s_sTel = $row3['SPhone'];
     $s_sWebsite = $row3['SWebsite'];
-
-
-
-    $isEdit = true;
-  }
+    }
     ?>
 
              <div class="row" >
-               <div class="col-md-4">
+               <div class="col-md-6">
                  <form action="event_BE.php" method = "post">
 
-                   <label for="e_id">Event ID :</label>
-                   <input type="text" class="form-control" id="e_id" name = "e_id" value = <?php echo $s_eid; ?>>
+                   <label for="e_id">Event ID</label>
+                   <?php if($s_eid != ""){
+                     echo '<input type="text" class="form-control" id="e_id" name = "e_id" value = '.$s_eid.' readonly>';
+                   }else{
+                     echo '<input type="text" class="form-control" id="e_id" name = "e_id" value = '.$s_eid.'>';
+                   }
+                   ?>
+
 
                    <label for="ename">Event Name</label>
                    <input type ="text" class="form-control" id="ename" name = "ename" value = <?php echo $sName; ?>>
@@ -134,9 +125,25 @@ $_SESSION["userType"] = "admin";
                    <label for="etime">Time:</label>
                    <input type="time" class="form-control" id="etime" name = "etime" value = <?php echo $sTime; ?>>
 
+                   <label for="ersvp">RSVP:</label>
                    <div class="radio">
-                     <label><input type="radio" id="ersvp" name="ersvp" value = <?php echo $sRsvp; ?>>RSVP</label>
+                    <?php
+                    if(isset($_POST['select']) && $sRsvp == "RSVP Required"){
+                      echo '<input type="radio" name="ersvp" value="RSVP Required" checked>Yes	<br>';
+                      echo '<input type="radio" name="ersvp" value="No RSVP Required">No';
+                    }
+                    else if(isset($_POST['select']) && $sRsvp == "No RSVP Required"){
+                      echo '<input type="radio" name="ersvp" value="RSVP Required">Yes	<br>';
+                      echo '<input type="radio" name="ersvp" value="No RSVP Required checked" >No';
+                    }
+                    else{
+                    echo '<input type="radio" name="ersvp" value="RSVP Required">Yes	<br>';
+                    echo '<input type="radio" name="ersvp" value="No RSVP Required" >No';
+                  }
+                  ?>
+
                    </div>
+
 
                    <label for="edesc">Detail:</label>
                    <input type ="text" class="form-control" id="edesc" name = "edesc" value = <?php echo $sDetail; ?>>
@@ -153,86 +160,31 @@ $_SESSION["userType"] = "admin";
                    <div class="row">
                      <div class="col-md-8">
                        <?php
-                       if($_SESSION["usertype"] == 2){//type 2 is admin
-                         echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
-                         echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
+                       if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
+
+                          //  echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
+
+                           echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
+
+                           echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
+                       }
+                       else{
                          echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
                        }
                        ?>
-                       <!-- <button type="Submit" class="btn btn-primary" value="submit" name="submit" >Add</button> -->
                      </div>
                    </div>
                 </form>
               </div>
            </div>
-    <?php  } ?>
 
 
 
-          <?php
-          $sql = "SELECT * FROM Event";
-          $sql2 = "SELECT * FROM Sposored_By";
-          $sql3 = "SELECT * FROM Sponsor";
-          $result = mysql_query($sql);
-          $result2 = mysql_query($sql2);
-          $result3 = mysql_query($sql3);
-          ?>
-        <div class="row">
-          <div class="col-md-12">
-            <form method = "post">
-              <div class="table-responsive">
-                <table class="table table-striped" style="width:auto" id="opp">
-                  <thead>
-                    <tr>
-                      <?php if($_SESSION["usertype"] == "2"){ echo "<th></th>";} ?>
-                      <th>ID</th>
-                      <th>Venue</th>
-                      <th>Date @ Time</th>
-                      <th>RSVP</th>
-                      <th>Detail</th>
-                      <th>Sponsor</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                      while($row = mysql_fetch_assoc($result)){
-                        echo "<tr>";
-                        $eve_id =$row["E_ID"];
-                        if($_SESSION["usertype"] == "2"){//only admins can select
-                        echo "<td>".'<input type="radio" name="va[]" value="'.$eve_id.'" >'."</td>";
-                        }
-                        echo "<td>".$eve_id."</td>";
-                        echo "<td>".$row["EVenue"]."</td>";
-                        echo "<td>".$row["EDate"]." @ ".$row["ETime"]."</td>";
-                        echo "<td>".$row["ERSVP"]."</td>";
-                        echo "<td>".$row["EDetail"]."</td>";
-                        $sql4 = "SELECT SEmail FROM Sponsored_By Where E_ID=".$eve_id.";";
-                        $res2 = mysql_query($sql4) ;
-                        $row2 = mysql_fetch_assoc($res2);
-                        echo "<td>".$row2["SEmail"]."</td>";
-                        echo "</tr>";
-                      }
-                    ?>
-
-                  </tbody>
-                </table>
-              </div>
-              <?php if($_SESSION["usertype"] == "2"){ ?>
-                <div class="row">
-                  <div class="col-md-2">
-                    <button type="submit" class="btn btn-defalut btn-block" style="width:40%" value="select" name="select" > Select </button>
-                  </div>
-                </div>
-              <?php } ?>
-            </form>
 
             <?php
             include_once ('event_BE.php');
             mysqli_close($connection); ?>
 
-          </div>
-        </div>
-      </div>
 
       <footer class="pathway-footer">
         <p><h4>Built by Pathway Inc.</h4></p>

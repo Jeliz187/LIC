@@ -21,20 +21,22 @@ if (!$result) {
 
 // echo 'Good so far';//debug code $
 if(isset($_POST['accept'])){//approve selected
+  // echo "Approve";//debug code $
   approve();
-  echo "Approve";//debug code $
 }
 else if(isSet($_POST['add'])){//insert new entry
+  // echo "Add";//debug code $
   insert();
-  echo "Add";//debug code $
+
 }
 else if(isSet($_POST['delete'])){//delete
+  // echo "Delete";//debug code $
   deletePro();
-  echo "Delete";//debug code $
+
 }
 else if(isSet($_POST['edit'])){//edit
+  // echo "Edit";//debug code $
   editPro();
-  echo "Edit";//debug code $
 }
 
 function editPro(){
@@ -62,23 +64,6 @@ function editPro(){
     $mtype = $_POST['mType'];
     $tel = $_POST['mtel'];
 
-    //picture Grab
-    // ini_set ("display_errors", "1");
-    // error_reporting(E_ALL);
-    // if(isset($_POST['edit']) && $_FILES['userfile']['size'] > 0)
-    // {
-    //   $fileName = $_FILES['userfile']['name'];
-    //   $tmpName  = $_FILES['userfile']['tmp_name'];
-    //   $fileSize = $_FILES['userfile']['size'];
-    //   $fileType = $_FILES['userfile']['type'];
-    //
-    //   $fp      = fopen($tmpName, 'r');
-    //   $content = fread($fp, filesize($tmpName));
-    //   $content = addslashes($content);
-    //   fclose($fp);
-    //
-    //   // echo "<br>File $fileName uploaded<br>";
-    // }
     $pic =$content ="";
 
     $sql5 = "UPDATE Member SET MEmail ='".$email."',MPassword = '".$paass."',
@@ -87,14 +72,14 @@ function editPro(){
     MOccupation = '".$job."',MEducation = '".$edu."',MStreetAddress = '".$street."',
     MCity = '".$city."',MState = '".$state."',MZip = '".$sip."',MCountryOfOrigin = '".$origin."',
     MType ='".$mtype."',MPhone = '".$tel."',MDateofBirth ='".$dob."' WHERE MEmail ='".$email."';";
-    echo $sql5;
+    // echo $sql5;
     mysql_query($sql5);
   }
   header('Location:allUsers.php');
 }
 
 function insert(){
-  echo "insert";
+  // echo "insert";
   $email =$_POST['email'];
   if($email != ""){
     $paass = $_POST['pass'];
@@ -116,23 +101,6 @@ function insert(){
     $state = $_POST['aState'];
     $mtype = $_POST['mType'];
     $tel = $_POST['mtel'];
-
-    //picture Grab
-    // ini_set ("display_errors", "1");
-    // error_reporting(E_ALL);
-    // if(isset($_POST['add']) && $_FILES['userfile']['size'] > 0)
-    // {
-    //   $fileName = $_FILES['userfile']['name'];
-    //   $tmpName  = $_FILES['userfile']['tmp_name'];
-    //   $fileSize = $_FILES['userfile']['size'];
-    //   $fileType = $_FILES['userfile']['type'];
-    //
-    //   $fp      = fopen($tmpName, 'r');
-    //   $content = fread($fp, filesize($tmpName));
-    //   $content = addslashes($content);
-    //   fclose($fp);
-
-      // echo "<br>File $fileName uploaded<br>";
     }
     $pic =$content;
 
@@ -140,18 +108,18 @@ function insert(){
       if($_SESSION["usertype"] == 2){
         $sql = "INSERT INTO Member VALUES ('".$email."', '".$paass."', '".$fname."', '".$lname."', '1', '".$soId."',
         '".$web."', '".$inter."', '".$org."', '".$job."', '".$edu."', '".$street."', '".$city."', '".$state."', '".$sip."',
-         '".$origin."', '".$mtype."', '".$content."', '".$tel."', '".$dob."');";
+         '".$origin."', '".$mtype."', '".$tel."', '".$dob."');";
         //echo $sql;//debug code $
       }
       else{
         $sql = "INSERT INTO Member VALUES ('".$email."', '".$paass."', '".$fname."', '".$lname."', '0', '".$soId."',
         '".$web."', '".$inter."', '".$org."', '".$job."', '".$edu."', '".$street."', '".$city."', '".$state."', '".$sip."',
-         '".$origin."', '".$mtype."', '".$content."', '".$tel."', '".$dob."');";
+         '".$origin."', '".$mtype."', '".$tel."', '".$dob."');";
       }
     }
     echo $sql;
     mysql_query($sql);
-  }
+
   if($_SESSION["usertype"] == 2){
     header('Location:allUsers.php');
   }
@@ -173,18 +141,15 @@ function deletePro(){
 }
 
 function approve(){
+  // echo "In";
   $forDel;
-  if(isset($_POST['va'])){
-    if (is_array($_POST['va'])) {
-      foreach($_POST['va'] as $value){
+  if(isset($_POST['ve'])){
+    if (is_array($_POST['ve'])) {
+      foreach($_POST['ve'] as $value){
         // echo $value."+";
         $forDel[] = $value;
       }
     }
-    // else {
-    //   $forDel[] = $_POST['va'];
-    //   //echo $value."|";
-    // }
   }
   $sqlForDel;
   for($x=0; $x<count($forDel);$x++){
