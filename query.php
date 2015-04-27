@@ -41,11 +41,38 @@ session_start();
 
   <body>
     <?php
-    include_once ('navbar.php');
-    include_once ('jumbotron.php');
+      include_once ('navbar.php');
+      include_once ('jumbotron.php');
     ?>
 
     <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Queries<h1>
+        </div><!--column-->
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-12">
+          <form role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
+            <label>
+              <span class="screen-reader-text"><?php echo _x( 'Search for:', 'label' ) ?></span>
+              <input type="search" class="search-field" placeholder="<?php echo esc_attr_x( 'Search …', 'placeholder' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" name="s" title="<?php echo esc_attr_x( 'Search for:', 'label' ); ?>" />
+            </label>
+            <?php
+              // output all of our Categories
+              // for more information see http://codex.wordpress.org/Function_Reference/wp_dropdown_categories
+              $swp_cat_dropdown_args = array(
+                  'show_option_all'  => __( 'Any Category' ),
+                  'name'             => 'swp_category_limiter',
+                );
+              wp_dropdown_categories( $swp_cat_dropdown_args );
+            ?>
+            <input type="submit" class="search-submit" value="<?php echo esc_attr_x( 'Search', 'submit button' ) ?>" />
+          </form>
+        </div><!--column-->
+      </div>
 
     </div><!--CONTAINER-->
 
