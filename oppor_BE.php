@@ -107,21 +107,14 @@ $connection = mysql_connect($host, $user, $password);
         }
       }
     }
-    if($_SESSION['appID'] < 999){
-      $temp =$_SESSION['appID'];
-      $_SESSION['appID']= $temp + 1;
-    }
-    else{
-      $_SESSION['appID'] = 0;
-    }
     echo "apply";
     $o_id = $for;
     $o_type = $_REQUEST['oType'];
     $m_email = $_SESSION['username'];
     $app = "emtpy";
 
-    $sql2 = "INSERT INTO Applies_For VALUES ('".$m_email."', '".$o_id."', '".$app."', '".$_SESSION['appID']."', '".date("Y-m-d")."');";
-    // echo $sql2;
+    $sql2 = "INSERT INTO Applies_For VALUES ('".$m_email."', '".$o_id."', '".$app."', 'null', '".date("Y-m-d")."');";
+    echo $sql2;
 
     mysql_query($sql2);
     header('Location:opporView.php');

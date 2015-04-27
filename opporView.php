@@ -95,7 +95,7 @@ include_once ('jumbotron.php');
               while($row = mysql_fetch_assoc($result)){
                 echo "<tr>";
                 $o_id =$row['O_ID'];
-                if($_SESSION["usertype"] == "2" || $_SESSION["usertype"] == "1"){//only admins can select
+                if($_SESSION["usertype"] == "2" || $_SESSION["usertype"] == "1"){//only admins can select & regualr users to see if they are attending
                 echo "<td>".'<input type="radio" name="va[]" value="'.$o_id.'" >'."</td>";
                 }
                 echo "<td>".$o_id."</td>";
@@ -131,9 +131,15 @@ include_once ('jumbotron.php');
         <?php } ?>
 
     <?php
-    $sql = "SELECT O_ID from Applies_For where MEmail =".$_SESSION['username'].";";
-    $result = mysql_query($sql);
+    $sql = 'SELECT * FROM Applies_For WHERE MEmail ="'.$_SESSION['username'].'";';
+    // echo $sql;
+    $result2 = mysql_query($sql);
     ?>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>My Opportunities</h3>
+      </div>
+    </div>
     <table class="table table-striped" style="width:auto" id="applyed">
       <thead>
         <tr>
@@ -149,7 +155,7 @@ include_once ('jumbotron.php');
       </thead>
       <tbody>
         <?php
-          while($row = mysql_fetch_assoc($result)){
+          while($row = mysql_fetch_assoc($result2)){
             echo "<tr>";
             $o_id =$row['O_ID'];
             echo "<td>".$o_id."</td>";
