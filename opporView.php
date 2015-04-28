@@ -1,6 +1,8 @@
 <?php
 //Start the Session
 session_start();
+//inclued
+include_once('oppor_BE.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -69,8 +71,10 @@ include_once ('jumbotron.php');
 </div>
   <div class="col-md-12">
     <?php
+      //allows switch of form behavior beween admin and regular
       if($_SESSION["usertype"] == "2"){
-        echo '<form action="oppor.php" method = "post">';
+        // echo '<form action="oppor.php" method = "post">';
+        echo '<form action="oppor_BE.php" method = "post">';
       }
       else{
         echo '<form action="oppor_BE.php" method = "post">';
@@ -88,6 +92,7 @@ include_once ('jumbotron.php');
               <th>Required GPA</th>
               <th>Reccommendation</th>
               <th>Description</th>
+              <th>Applied</th>
             </tr>
           </thead>
           <tbody>
@@ -107,8 +112,14 @@ include_once ('jumbotron.php');
                 $or = $row['OReccommendation'];
                 echo '<td>'.$or.'</td>';
                 echo "<td>".$row["ODescription"]."</td>";
+                if(doesOppExist($o_id, $_SESSION['username'])){
+                  echo "<td>Yes</td>";
+                }//if
+                else{
+                  echo "<td>No</td>";
+                }//else
                 echo "</tr>";
-              }
+              }//end of while
             ?>
 
           </tbody>
@@ -116,67 +127,29 @@ include_once ('jumbotron.php');
       </div>
       <?php if($_SESSION["usertype"] == "2"){ ?>
         <div class="row">
-          <div class="col-md-2">
-            <button type="submit" class="btn btn-defalut btn-block" style="width:40%" value="select" name="select" > Select </button>
+            <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-block" style="width:40%" value="apply" name="apply" >Apply </button>
+            <button type="submit" class="btn btn-warning btn-block" style="width:40%" value="select" name="select" > Select </button>
+            <button type="submit" class="btn btn-danger btn-block" style="width:40%" value="drop" name="drop" >Drop </button>
           </div>
-        </div>
-      </form>
-      <?php }
-      else { ?>
+          </div>
+        </form>
+      <?php
+        }//end of if
+        else {
+      ?>
         <div class="row">
           <div class="col-md-2">
             <button type="submit" class="btn btn-primary btn-block" style="width:40%" value="apply" name="apply" >Apply </button>
+            <button type="submit" class="btn btn-danger btn-block" style="width:40%" value="drop" name="drop" >Drop </button>
           </div>
         </div>
-        <?php } ?>
+      </form>
+  <?php
+  }//end of else
 
-    <?php
-    $sql = 'SELECT * FROM Applies_For WHERE MEmail ="'.$_SESSION['username'].'";';
-    // echo $sql;
-    $result2 = mysql_query($sql);
+    mysqli_close($connection);
     ?>
-    <div class="row">
-      <div class="col-md-12">
-        <h3>My Opportunities</h3>
-      </div>
-    </div>
-    <table class="table table-striped" style="width:auto" id="applyed">
-      <thead>
-        <tr>
-          <?php if($_SESSION["usertype"] == "2"){ echo "<th></th>";} ?>
-          <th>ID</th>
-          <th>Type</th>
-          <th>Start Date</th>
-          <th>Application Deadline</th>
-          <th>Required GPA</th>
-          <th>Reccommendation</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-          while($row = mysql_fetch_assoc($result2)){
-            echo "<tr>";
-            $o_id =$row['O_ID'];
-            echo "<td>".$o_id."</td>";
-            echo "<td>".$row['OType']."</td>";
-            $os = $row['OStart'];
-            echo "<td>".$os."</td>";
-            echo "<td>".$row['OApp_dealine']."</td>";
-            echo "<td>".$row['OGPA']."</td>";
-            $or = $row['OReccommendation'];
-            echo '<td>'.$or.'</td>';
-            echo "<td>".$row["ODescription"]."</td>";
-            echo "</tr>";
-          }
-        ?>
-
-      </tbody>
-    </table>
-    <?php
-    include_once ('event_BE.php');
-    mysqli_close($connection); ?>
-
   </div>
 </div>
 <!-- jQuery library -->
@@ -191,5 +164,4 @@ include_once ('jumbotron.php');
 <footer class="pathway-footer">
   <p><h4>Built by Pathway Inc.</h4></p>
 </footer>
-
 </html>

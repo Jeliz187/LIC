@@ -295,12 +295,12 @@ $etype = $row['MType'];
             echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
           }
           ?>
-        </div>
+          <br>
+        </form>
       </div>
-      <br>
-    </form>
-  </div> <!--CONTAINER-->
-</div>
+    </div>
+
+
 
 
 <?php
@@ -352,13 +352,14 @@ if($_SESSION["usertype"] == 2){
             </table>
           </div>
           <div class="row top5">
-            <div class = "col-md-3">
+            <div class = "col-md-4">
               <button type="submit" class="btn btn-primary btn-block" style="width:20%" name ="accept" value="accept">Accept</button>
             </div>
           </div>
         </form>
       </div>
     </div>
+  </div> <!--CONTAINER-->
 
     <?php
   }

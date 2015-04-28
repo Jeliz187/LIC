@@ -1,3 +1,8 @@
+<?php
+//Start the Session
+session_start();
+include_once ('oppor_BE.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,10 +42,10 @@ include_once ('jumbotron.php');
     echo 'Could not run query: ' . mysql_error();
     exit;
   }
-
   ?>
 
   <body>
+
 
     <div class="container">
       <div class="row">
@@ -60,6 +65,12 @@ include_once ('jumbotron.php');
           }
         }
       }
+    }
+    else{
+      $for = $_SESSION['tempOpp'];
+      $_SESSION['tempOpp']= "";
+    }
+
       $s_oid = $for;
       $search = "SELECT * FROM Opportunity WHERE O_ID = '".$s_oid."'";
       // echo $search;//debug code $
@@ -71,7 +82,7 @@ include_once ('jumbotron.php');
       $sGPA = $row["OGPA"];
       $sRec = $row["OReccommendation"];
       $sDesc = $row["ODescription"];
-    }
+
   ?>
 
 
@@ -86,12 +97,13 @@ include_once ('jumbotron.php');
       <div class="row" >
         <div class="col-md-6">
           <form action="oppor_BE.php" method = "POST">
-
-            <label for="o_id">Opportunity ID :</label>
-            <?php if($s_oid != ""){
+            <?php
+            //shows opportunity id when in edit mode
+            if($s_oid != ""){
+              echo '<label for="o_id">Opportunity ID :</label>';
               echo '<input type="text" class="form-control" id="o_id" name = "o_id" value ='.$s_oid.' readonly>';
             }else{
-              echo '<input type="text" class="form-control" id="o_id" name = "o_id" value ='.$s_oid.'>';
+              // echo '<input type="text" class="form-control" id="o_id" name = "o_id" value ='.$s_oid.'>';
             }
             ?>
 
@@ -172,7 +184,6 @@ include_once ('jumbotron.php');
       $sDesc = $row["ODescription"];
       $isEdit = true;
       header('Location:oppor.php');
-      include_once ('oppor_BE.php');
       mysqli_close($connection); ?>
     </div>
 
