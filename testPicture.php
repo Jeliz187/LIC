@@ -16,10 +16,11 @@ session_start();
 				die('Could not connect: ' . mysqli_error());
 			}
 			mysql_query("use cs4342team4sp15");
-			$res = mysql_query($con,"SELECT Picture FROM Member_Picture WHERE MEmail = '".$_SESSION['username']."';");
+			$sql = "SELECT Picture FROM Member_Picture WHERE MEmail = '".$_SESSION['username']."';";
+			$res = mysql_query($sql);
 			$row = mysql_fetch_assoc($res);
 			$data = $row['Picture'];
-			echo '<img src="data:image/jpeg;base64,' . base64_encode( $data ) . '" />';
+			// echo '<img src="data:image/jpeg;base64,' . base64_encode( $data ) . '" />';
 
 
 

@@ -117,6 +117,12 @@ $result3 = mysql_query($sql3);
                     $res2 = mysql_query($sql4) ;
                     $row2 = mysql_fetch_assoc($res2);
                     echo "<td>".$row2["SEmail"]."</td>";
+                    if(doesEveExist($eve_id, $_SESSION['username'])){
+                      echo "<td>Yes</td>";
+                    }//if
+                    else{
+                      echo "<td>No</td>";
+                    }//else
                     echo "</tr>";
                   }
                   ?>

@@ -38,12 +38,12 @@ if (!$result) {
   else if(isSet($_POST['attend'])){
     // echo "apply";//debug code $
     $_SESSION['modeEve'] = "attend";
-    // applyOpp();
+    attendEve();
   }//end else if
   else if(isSet($_POST['drop'])){
     // echo "drop";//debug code $
     $_SESSION['modeEve'] = "drop";
-    // dropOpp();
+    dropEve();
   }//end else if
   else if(isSet($_POST['select'])){
     // echo "select";//debug code $
@@ -192,4 +192,50 @@ if (!$result) {
     }
     return false;
   }//end of doesOppExist
+
+  //adds selected event to Attends_Event
+  function attendEve(){
+    if(isset($_POST['va'])){
+      if (is_array($_POST['va'])) {
+        foreach($_POST['va'] as $value){
+          // echo $value."+";
+          $for = $value;
+        }
+      }
+    }
+
+    $e_id =  $for;
+    $m_email = $_SESSION['username'];
+
+    if(!doesEveExist($o_id, $_SESSION['username'])){
+      $sql2 = "INSERT INTO Attends_Event VALUES ('null', '".$m_email."', '".$e_id."');";
+      // echo $sql2;
+      mysql_query($sql2);
+    }
+    header('Location:eventView.php');
+  }
+
+  //deletes the selected event from Attends_Event
+  function dropEve(){
+    if(isset($_POST['va'])){
+      if (is_array($_POST['va'])) {
+        foreach($_POST['va'] as $value){
+          // echo $value."+";
+          $for = $value;
+        }
+      }
+    }
+
+    $e_id =  $for;
+    $m_email = $_SESSION['username'];
+
+    $atid = attendId($e_id, $m_email);
+
+    if(!doesEveExist($o_id, $_SESSION['username'])){
+      $sql2 = "DELETE FROM Attends_Event WHERE AT_ID ='".$atid."';";
+      // echo $sql2;
+      mysql_query($sql2);
+    }
+    header('Location:eventView.php');
+  }
 ?>
