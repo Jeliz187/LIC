@@ -58,6 +58,7 @@ session_start();
            echo '     <ul class="dropdown-menu" role="menu">';
            echo '       <li><a href="reports2.php"> Reports </a></li>';
            echo '       <li><a href="manUser.php"> Manage Users </a></li>';
+           echo '       <li><a href="query.php"> Queries </a></li>';
            echo '     </ul>';
            echo '   </li>';
            echo '  </ul>';

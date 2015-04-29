@@ -64,47 +64,49 @@ include_once ('jumbotron.php');
         ?>
 
 <body>
-  <div class="col-md-12" >
-    <!-- <form action= "profile.php" name="members" method = "POST"> -->
-      <div class="table-responsive">
-        <table class="table table-striped" style="width:auto" >
-          <thead>
-            <tr>
-              <!-- <th><input type="radio" name="everything" hidden></th> -->
-              <th>Email</th>
-              <th>Name</th>
-              <th>Social ID</th>
-              <th>Website</th>
-              <th>Interest</th>
-              <th>Organization</th>
-              <th>Occupation</th>
-              <th>Education</th>
-              <th>Country of Origin</th>
-              <th>DOB</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            while($row5 = mysql_fetch_assoc($res)){
-              echo '<tr>';
-              $mEmail =$row5["MEmail"];
-              // echo '<td><a href="profile.php">Profile</a></td>';
-              // echo "<td>".'<input type="radio" name="va[]" value="'.$mEmail.'">'."</td>";
-              echo "<td>".$mEmail."</td>";
-              echo "<td>".$row5["MFname"]." ".$row5["MLname"]."</td>";
-              echo "<td>".$row5["MSocialID"]."</td>";
-              echo "<td>".$row5["MWebsite"]."</td>";
-              echo "<td>".$row5["MFieldofInterest"]."</td>";
-              echo "<td>".$row5["MOrginization"]."</td>";
-              echo "<td>".$row5["MOccupation"]."</td>";
-              echo "<td>".$row5["MEducation"]."</td>";
-              echo "<td>".$row5["MCountryOfOrigin"]."</td>";
-              echo "<td>".$row5["MDateofBirth"]."</td>";
-              echo "</tr>";
-            }
-            ?>
-          </table>
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12" >
+        <!-- <form action= "profile.php" name="members" method = "POST"> -->
+          <div class="table-responsive">
+            <table class="table table-striped" style="width:auto" >
+              <thead>
+                <tr>
+                  <!-- <th><input type="radio" name="everything" hidden></th> -->
+                  <th>Email</th>
+                  <th>Name</th>
+                  <th>Social ID</th>
+                  <th>Website</th>
+                  <th>Interest</th>
+                  <th>Organization</th>
+                  <th>Occupation</th>
+                  <th>Education</th>
+                  <th>Country of Origin</th>
+                  <th>DOB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                while($row5 = mysql_fetch_assoc($res)){
+                  echo '<tr>';
+                  $mEmail =$row5["MEmail"];
+                  // echo '<td><a href="profile.php">Profile</a></td>';
+                  // echo "<td>".'<input type="radio" name="va[]" value="'.$mEmail.'">'."</td>";
+                  echo "<td>".$mEmail."</td>";
+                  echo "<td>".$row5["MFname"]." ".$row5["MLname"]."</td>";
+                  echo "<td>".$row5["MSocialID"]."</td>";
+                  echo "<td>".$row5["MWebsite"]."</td>";
+                  echo "<td>".$row5["MFieldofInterest"]."</td>";
+                  echo "<td>".$row5["MOrginization"]."</td>";
+                  echo "<td>".$row5["MOccupation"]."</td>";
+                  echo "<td>".$row5["MEducation"]."</td>";
+                  echo "<td>".$row5["MCountryOfOrigin"]."</td>";
+                  echo "<td>".$row5["MDateofBirth"]."</td>";
+                  echo "</tr>";
+                }
+                ?>
+              </table>
+            </div>
 
           <!-- <div class="row top5" >
             <div class="col-md-12" >
@@ -114,20 +116,23 @@ include_once ('jumbotron.php');
 
         <!-- </form> -->
       </div>
+    </div>
+  </div><!--CONTAINER-->
+
+
   <?php
     mysqli_close($connection);
   ?>
+  <footer class="pathway-footer">
+    <p><h4>Built by Pathway Inc.</h4></p>
+  </footer>
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 
 </body>
 
-<footer class="pathway-footer">
-  <p><h4>Built by Pathway Inc.</h4></p>
-</footer>
 </html>

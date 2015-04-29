@@ -276,7 +276,7 @@ $etype = $row['MType'];
 
       <!-- Submit Button Group -->
       <div class="row">
-        <div class = "col-md-3s">
+        <div class = "col-md-3">
           <?php
           if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
 
@@ -296,10 +296,7 @@ $etype = $row['MType'];
           ?>
         </div>
       </div>
-      <br>
     </form>
-  </div> <!--CONTAINER-->
-</div>
 
 
 <?php
@@ -309,53 +306,61 @@ if($_SESSION["usertype"] == 2){
   $result5 = mysql_query($sql5);
   if($result5->num_rows >= 0){
     ?>
-    <form action= "manUser_BE.php" method = "POST">
-      <table class="table table-striped" style="width:auto" id="opp">
-        <thead>
-          <tr>
-            <th><input type="checkbox" name="everything" onClick="toggle(this)"></th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Social ID</th>
-            <th>Website</th>
-            <th>Interest</th>
-            <th>Organization</th>
-            <th>Education</th>
-            <th>Country of Origin</th>
-            <th>DOB</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          while($row5 = mysql_fetch_assoc($result5)){
-            echo "<tr>";
-            $mEmail =$row5["MEmail"];
-            echo "<td>".'<input type="checkbox" name="ve[]" value="'.$mEmail.'">'."</td>";
-            echo "<td>".$mEmail."</td>";
-            echo "<td>".$row5["MFname"]." ".$row["MLname"]."</td>";
-            echo "<td>".$row5["MSocialID"]."</td>";
-            echo "<td>".$row5["MWebsite"]."</td>";
-            echo "<td>".$row5["MFieldofInterest"]."</td>";
-            echo "<td>".$row5["MOrginization"]."</td>";
-            echo "<td>".$row5["MOccupation"]."</td>";
-            echo "<td>".$row5["MEducation"]."</td>";
-            echo "<td>".$row5["MCountryOfOrigin"]."</td>";
-            echo "<td>".$row5["MDateofBirth"]."</td>";
-            echo "</tr>";
-          }
-          ?>
-        </tbody>
-      </table>
-      <button type="submit" class="btn btn-primary btn-block" style="width:20%" name ="accept" value="accept">Accept</button>
-    </form>
-    <?php
-  }
-}
-mysqli_close($connection);
-include_once ('manUser_BE.php');
-?>
-</div>
-
+    <div class="row top30">
+      <fiv class="col-md-12">
+        <form action= "manUser_BE.php" method = "POST">
+          <div class="table-responsive">
+            <table class="table table-striped" style="width:auto" id="opp">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" name="everything" onClick="toggle(this)"></th>
+                  <th>Email</th>
+                  <th>Name</th>
+                  <th>Social ID</th>
+                  <th>Website</th>
+                  <th>Interest</th>
+                  <th>Organization</th>
+                  <th>Education</th>
+                  <th>Country of Origin</th>
+                  <th>DOB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                while($row5 = mysql_fetch_assoc($result5)){
+                  echo "<tr>";
+                  $mEmail =$row5["MEmail"];
+                  echo "<td>".'<input type="checkbox" name="ve[]" value="'.$mEmail.'">'."</td>";
+                  echo "<td>".$mEmail."</td>";
+                  echo "<td>".$row5["MFname"]." ".$row["MLname"]."</td>";
+                  echo "<td>".$row5["MSocialID"]."</td>";
+                  echo "<td>".$row5["MWebsite"]."</td>";
+                  echo "<td>".$row5["MFieldofInterest"]."</td>";
+                  echo "<td>".$row5["MOrginization"]."</td>";
+                  echo "<td>".$row5["MOccupation"]."</td>";
+                  echo "<td>".$row5["MEducation"]."</td>";
+                  echo "<td>".$row5["MCountryOfOrigin"]."</td>";
+                  echo "<td>".$row5["MDateofBirth"]."</td>";
+                  echo "</tr>";
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
+          <div class="row top5">
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary btn-block" style="width:20%" name ="accept" value="accept">Accept</button>
+            </div>
+          </div>
+        </form>
+        <?php
+      }
+    }
+    mysqli_close($connection);
+    include_once ('manUser_BE.php');
+    ?>
+    </div>
+</div> <!--CONTAINER-->
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
