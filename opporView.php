@@ -38,7 +38,7 @@ include_once ('jumbotron.php');
             exit;
         }
 
-        //echo "<p> Got Somthing</p>";//debug code $
+
 
         if(isset($_POST['va'])){
           if (is_array($_POST['va'])) {
@@ -64,7 +64,7 @@ include_once ('jumbotron.php');
   <div class="col-md-6">
   <?php if($_SESSION["usertype"] == "2"){?>
     <form action="oppor.php" method = "POST">
-      <button type="submit" class="btn btn-primary btn-block" style="width:20%" name = "new" value="new">New Event</button>
+      <button type="submit" class="btn btn-primary btn-block" style="width:20%" name = "new" value="new">New Opportunity</button>
     </form>
 
   <?php }//if close ?>

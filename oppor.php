@@ -55,34 +55,24 @@ include_once ('jumbotron.php');
       </div>
 
   <?php
-    //edit section
-    if(isset($_POST['select'])){
-      if(isset($_POST['va'])){
-        if (is_array($_POST['va'])) {
-          foreach($_POST['va'] as $value){
-            // echo $value."+";
-            $for = $value;
-          }
-        }
-      }
-    }
-    else{
-      $for = $_SESSION['tempOpp'];
-      $_SESSION['tempOpp']= "";
-    }
+  //edit section
+  if(isset($_POST['new'])){
+    $_SESSION['modeOpp'] = "add";
+  }
+  else{
+    $s_oid = $_SESSION['tempOpp'];
+  }//end else
 
-      $s_oid = $for;
-      $search = "SELECT * FROM Opportunity WHERE O_ID = '".$s_oid."'";
-      // echo $search;//debug code $
-      $sre = mysql_query($search);
-      $row = mysql_fetch_assoc($sre);
-      $sType = $row["OType"];
-      $sStart = $row["OStart"];
-      $sDead = $row["OApp_dealine"];
-      $sGPA = $row["OGPA"];
-      $sRec = $row["OReccommendation"];
-      $sDesc = $row["ODescription"];
-
+  $search = "SELECT * FROM Opportunity WHERE O_ID = '".$s_oid."'";
+  // echo $search;//debug code $
+  $sre = mysql_query($search);
+  $row = mysql_fetch_assoc($sre);
+  $sType = $row["OType"];
+  $sStart = $row["OStart"];
+  $sDead = $row["OApp_dealine"];
+  $sGPA = $row["OGPA"];
+  $sRec = $row["OReccommendation"];
+  $sDesc = $row["ODescription"];
   ?>
 
 
@@ -128,14 +118,13 @@ include_once ('jumbotron.php');
                   </select>
               </div>
             </div>
-
             <label for="desc">Description:</label>
             <input type ="text" class="form-control" id="desc" name = "desc" value = <?php echo $sDesc; ?>>
           </div>
         </div>
         <div class="row top5" >
             <?php
-            if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
+            if($_SESSION["usertype"] == 2 && $_SESSION['modeOpp'] == "select" ){//type 2 is admin
 
                 // echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
 
@@ -147,7 +136,7 @@ include_once ('jumbotron.php');
                 echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
                 echo '</div>';
             }
-            else{
+            else if($_SESSION["usertype"] == 2 && $_SESSION['modeOpp'] == "add"){
               echo '<div class="col-md-1">';
               echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
               echo '</div>';
@@ -182,8 +171,8 @@ include_once ('jumbotron.php');
       $sGPA = $row["OGPA"];
       $sRec = $row["OReccommendation"];
       $sDesc = $row["ODescription"];
-      $isEdit = true;
-      header('Location:oppor.php');
+      // header('Location:oppor.php');
+      $_SESSION['tempOpp']= "";
       mysqli_close($connection); ?>
     </div>
 

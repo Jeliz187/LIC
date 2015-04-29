@@ -22,23 +22,49 @@ if (!$result) {
 
   if(isset($_POST['add'])){
     // echo "add";//debug code $
-    $_SESSION['pageMode'] = "add";
+    $_SESSION['modeEve'] = "add";
      postEvent();
   }
   else if(isset($_POST['delete'])){
     // echo "delete";//debug code $
-    $_SESSION['pageMode'] = "delete";
+    $_SESSION['modeEve'] = "delete";
      deleteEvent();
   }
   else if(isSet($_POST['edit'])){
     // echo "edit";//debug code $
-    $_SESSION['pageMode'] = "edit";
+    $_SESSION['modeEve'] = "edit";
     modEvent();
   }
+  else if(isSet($_POST['attend'])){
+    // echo "apply";//debug code $
+    $_SESSION['modeEve'] = "attend";
+    // applyOpp();
+  }//end else if
+  else if(isSet($_POST['drop'])){
+    // echo "drop";//debug code $
+    $_SESSION['modeEve'] = "drop";
+    // dropOpp();
+  }//end else if
+  else if(isSet($_POST['select'])){
+    // echo "select";//debug code $
+    $_SESSION['modeEve'] = "select";
+      if(isset($_POST['va'])){
+        if (is_array($_POST['va'])) {
+          foreach($_POST['va'] as $value){
+            // echo $value."+";
+            $for = $value;
+          }//end foreach
+        }//end if
+      }//end if
+      // echo $for;
+      $_SESSION['tempEve'] = $for;
+      header('Location:event2.php');
+  }//end else if
 
 
+  //add new Event, Sponsor, and Sponsored by
   function postEvent(){
-    $e_id = $_POST['e_id'];
+    // $e_id = $_POST['e_id'];
     $ename = $_POST['ename'];
     $evenue = $_POST['evenue'];
     $epicture = "";
@@ -51,26 +77,27 @@ if (!$result) {
     $semail = $_POST['semail'];
     $memail = $_SESSION['username'];
 
-
-    $sql = "INSERT INTO Event VALUES ('".$e_id."', '".$ename."', '".$evenue."', '".$epicture."', '".$edate."', '".$etime."', '".$ersvp."', '".$edetail."', '".$memail."');";
-    echo $sql;//debug code $
-
     $sql2 = "INSERT INTO Sponsor VALUES ('".$semail."', '".$stel."', '".$sweb."');";
-    echo $sql2;//debug code $
+    mysql_query($sql2);//Sponsor
+    // echo $sql2;//debug code $
 
-    $sql3  = "INSERT INTO Sponsored_By VALUES ('".$e_id."', '".$semail."');";
-    echo $sql3;//debug code $
-
-
+    $sql = "INSERT INTO Event VALUES ('null', '".$ename."', '".$evenue."', '".$epicture."', '".$edate."', '".$etime."', '".$ersvp."', '".$edetail."', '".$memail."');";
+    mysql_query($sql);//Event second
     // echo $sql;//debug code $
-    if($e_id> 0){
-      mysql_query($sql2);
-      mysql_query($sql1);
-      mysql_query($sql3);
-    }
+
+    $sql4 = "SELECT E_ID FROM Event WHERE EName ='".$ename."';";
+    // echo $sql4;//debug code $
+    $result = mysql_query($sql4);
+    $row = mysql_fetch_assoc($result);
+    $tempID = $row['E_ID'];
+    $sql3  = "INSERT INTO Sponsored_By VALUES ('".$tempID."', '".$semail."');";
+    mysql_query($sql3);//Sponsored_by
+    // echo $sql3;//debug code $
+
     header('Location:eventView.php');
   }
 
+  //deletes selected event
   function deleteEvent(){//delete function working
     $for = $_POST['e_id'];
     $by = $_POST['semail'];
@@ -79,6 +106,7 @@ if (!$result) {
       $sql4 = 'SELECT AT_ID FROM Attends_Event WHERE E_ID = '.$for.';';
       // echo $sql2;//debug code $
       // echo $sql3;//debug code $
+
       mysql_query($sql3);
       $res = mysql_query($sql4);
       while($row = mysql_fetch_assoc($res)){
@@ -91,6 +119,7 @@ if (!$result) {
     header('Location:eventView.php');
   }
 
+  //edit selected event
   function modEvent(){
     $e_id = $_POST['e_id'];
     $ename = $_POST['ename'];
@@ -112,9 +141,10 @@ if (!$result) {
 
     $sql7 = "UPDATE Sponsor SET SEmail ='".$semail."',SPhone = '".$stel."',SWebsite = '".$sweb."' WHERE SEmail ='".$semail."';";
 
-    echo $sql5;
-    echo $sql6;
-    echo $sql7;
+    //debug code $
+    // echo $sql5;
+    // echo $sql6;
+    // echo $sql7;
 
     mysql_query($sql5);//event update
     mysql_query($sql6);//sponsored by update
@@ -122,4 +152,44 @@ if (!$result) {
 
     header('Location:eventView.php');
   }
+
+  //returns AP_ID if the id and email match in Attends_Event
+  //else returns "-1"
+  function attendId($id, $em){
+    // echo $id." - ".$em.":";//debug code $
+    $sql = "SELECT * FROM Attends_Event;";
+    $res = mysql_query($sql);
+    while($row = mysql_fetch_assoc($res)){
+      $tid = $row['E_ID'];
+      // echo $tid." - ";//debug code $
+      if($id == $tid){
+        $tem = $row['MEmail'];
+        // echo $tem;//debug code $
+        if($em == $tem){
+          $ap = $row['AT_ID'];
+          return $ap;
+        }
+      }
+    }
+    return -1;
+  }//end of appliedId
+
+  //returns boolean if the id and email match in Attends_Event
+  function doesEveExist($id, $em){
+    // echo $id." - ".$em;//debug code $
+    $sql = "SELECT * FROM Attends_Event;";
+    $res = mysql_query($sql);
+    while($row = mysql_fetch_assoc($res)){
+      $tid = $row['E_ID'];
+      // echo $tid." - ";//debug code $
+      if($id == $tid){
+        $tem = $row['MEmail'];
+        // echo $tem;//debug code $
+        if($em == $tem){
+          return true;
+        }
+      }
+    }
+    return false;
+  }//end of doesOppExist
 ?>

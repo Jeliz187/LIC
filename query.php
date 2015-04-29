@@ -1,6 +1,7 @@
 <?php
 //Start the Session
 session_start();
+//inclued
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,113 +49,130 @@ session_start();
     <div class="container">
 
       <div class="row top30">
+
+        <!-- By Education -->
+        <form action="queryView.php" method = "POST">
         <div class="col-md-3">
           <label for="edu">Query by Education:</label>
-          <select class="form-control" id="edu" name = "edu" value = <?php echo $educa; ?>>
-            <option>High School/GED</option>
-            <option>2-Year College/Tecnical School</option>
-            <option>4-Year College</option>
-            <option>Graduate School</option>
+          <select class="form-control" name = "edu">
+            <?php
+              $esql = "SELECT MEducation FROM Member GROUP BY MEducation;";
+              $res3 = mysql_query($esql);
+              while($row = mysql_fetch_assoc($res3)){
+                //do something with the contents of $row
+                $ed = $row['MEducation'];
+                echo "<option value=".$ed.">".$ed."</option>";
+              }
+            ?>
           </select>
         </div>
       </div>
         <div class="row top5">
           <div class="col-md-3">
-            <button type="submit" class="btn btn-primary" name = "query_education" value="query_education">Submit</button>
+            <button type="submit" class="btn btn-primary" name = "subEdu" value="subEdu">Submit</button>
           </div>
         </div>
+      </form>
 
+      <!-- By Country of Origin -->
+      <form action="queryView.php" method = "POST">
         <div class="row top30">
           <div class="col-md-3">
             <label for="country">Query by Country of Origin:</label>
-            <select class="form-control" id="country" name = "country" value = <?php echo $cou; ?>>
-              <?php include_once("country_dropdown.php"); ?>
+            <select class="form-control" id="country" name = "country">
+              <?php
+                $ssql = "SELECT MCountryOfOrigin FROM Member GROUP BY MCountryOfOrigin;";
+                $res3 = mysql_query($ssql);
+                while($row = mysql_fetch_assoc($res3)){
+                  //do something with the contents of $row
+                  $co = $row['MCountryOfOrigin'];
+                  echo "<option value=".$co.">".$co."</option>";
+                }
+              ?>
             </select>
           </div>
         </div>
           <div class="row top5">
             <div class="col-md-3">
-              <button type="submit" class="btn btn-primary" name = "query_country" value="query_country">Submit</button>
+              <button type="submit" class="btn btn-primary" name = "subCon" value="subCon">Submit</button>
             </div>
           </div>
+        </form>
 
+        <!-- By State -->
+        <form action="queryView.php" method = "POST">
         <div class="row top30">
           <div class = "col-md-3">
             <label for="aState">Query by State:</label>
-            <select class="form-control" id="aState" name = "aState" value = <?php echo $st; ?>>
-              <?php include_once("states_dropdown.php"); ?>
+            <select class="form-control" name = "aState">
+              <?php
+                $ssql = "SELECT MState FROM Member GROUP BY MState;";
+                $res3 = mysql_query($ssql);
+                while($row = mysql_fetch_assoc($res3)){
+                    //do something with the contents of $row
+                    $st = $row['MState'];
+                    echo "<option value=".$st.">".$st."</option>";
+                }
+              ?>
             </select>
           </div>
         </div>
         <div class="row top5">
           <div class="col-md-3">
-            <button type="submit" class="btn btn-primary" name = "query_state" value="query_state">Submit</button>
+            <button type="submit" class="btn btn-primary" name = "subSt" value="subSt">Submit</button>
           </div>
         </div>
+      </form>
 
+      <!-- By Interest -->
+      <form action="queryView.php" method = "POST">
+      <div class="row top30">
+        <div class = "col-md-3">
+          <label for="aState">Query by Interest:</label>
+          <select class="form-control" name = "fieldInterest">
+            <?php
+              $isql = "SELECT MFieldofInterest FROM Member GROUP BY MFieldofInterest;";
+              $res3 = mysql_query($isql);
+              while($row = mysql_fetch_assoc($res3)){
+                  //do something with the contents of $row
+                  $fi = $row['MFieldofInterest'];
+                  echo "<option value=".$fi.">".$fi."</option>";
+              }
+            ?>
+          </select>
+        </div>
+      </div>
+      <div class="row top5">
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-primary" name = "filInt" value="filInt">Submit</button>
+        </div>
+      </div>
+    </form>
 
-        <!---------------------->
-        <!--Example MySQL query-->
-        <!---------------------->
-
-        <!--select MFname, MLname, MEmail, MOccupation from Member where McountryOfOrigin like "United States"
-        select MFname, MLname, MEmail, MOccupation from Member where MEducation like "Undergrad"
-        select MFname, MLname, MEmail, MOccupation from Member where MState like "Texas"-->
-
-
-        <div class="row" >
-          <div class="col-md-12" >
-            <form action= "profile.php" name="members" method = "POST">
-              <div class="table-responsive">
-                <table class="table table-striped" style="width:auto" >
-                  <thead>
-                    <tr>
-                      <th><input type="radio" name="everything" hidden></th>
-                      <!-- <th>Email</th> -->
-                      <th>Name</th>
-                      <th>Social ID</th>
-                      <th>Website</th>
-                      <th>Interest</th>
-                      <th>Organization</th>
-                      <th>Occupation</th>
-                      <th>Education</th>
-                      <th>Country of Origin</th>
-                      <th>DOB</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    while($row5 = mysql_fetch_assoc($res)){
-                      echo '<tr>';
-                      $mEmail =$row5["MEmail"];
-                      // echo '<td><a href="profile.php">Profile</a></td>';
-                      echo "<td>".'<input type="radio" name="va[]" value="'.$mEmail.'">'."</td>";
-                      // echo "<td>".$mEmail."</td>";
-                      echo "<td>".$row5["MFname"]." ".$row5["MLname"]."</td>";
-                      echo "<td>".$row5["MSocialID"]."</td>";
-                      echo "<td>".$row5["MWebsite"]."</td>";
-                      echo "<td>".$row5["MFieldofInterest"]."</td>";
-                      echo "<td>".$row5["MOrginization"]."</td>";
-                      echo "<td>".$row5["MOccupation"]."</td>";
-                      echo "<td>".$row5["MEducation"]."</td>";
-                      echo "<td>".$row5["MCountryOfOrigin"]."</td>";
-                      echo "<td>".$row5["MDateofBirth"]."</td>";
-                      echo "</tr>";
-                    }
-                    ?>
-                  </table>
-                </div>
-
-                  <!-- <div class="row top5" >
-                    <div class="col-md-12" >
-                      <button type="submit" class="btn btn-primary" value="Submit1" name = "Submit1">Look</button>
-                    </div>
-                  </div> -->
-
-                </form>
-              </div>
-          </div><!-- row -->
-
+    <!-- By Occupation -->
+    <form action="queryView.php" method = "POST">
+    <div class="row top30">
+      <div class = "col-md-3">
+        <label for="aState">Query by Occupation:</label>
+        <select class="form-control" name = "occupa">
+          <?php
+            $ocsql = "SELECT MOccupation FROM Member GROUP BY MOccupation;";
+            $res3 = mysql_query($ocsql);
+            while($row = mysql_fetch_assoc($res3)){
+                //do something with the contents of $row
+                $oc = $row['MOccupation'];
+                echo "<option value=".$oc.">".$oc."</option>";
+            }
+          ?>
+        </select>
+      </div>
+    </div>
+    <div class="row top5">
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary" name = "ocup" value="ocup">Submit</button>
+      </div>
+    </div>
+  </form>
     </div><!--CONTAINER-->
 
 
@@ -162,31 +180,6 @@ session_start();
 
 
     <?php
-  //   $forDel;
-  //   if(isset($_POST['ve'])){
-  //     if (is_array($_POST['ve'])) {
-  //       foreach($_POST['ve'] as $value){
-  //         //echo $value."+";
-  //         $forDel[] = $value;
-  //
-  //       }
-  //     } else {
-  //       $value = $_POST['ve'];
-  //       //echo $value."|";
-  //     }
-  //   }
-  //
-  //
-  //   $sqlForDel;
-  //   for($x=0; $x<count($forDel);$x++){
-  //     //$sql2 = 'DELETE FROM EVENT WHERE EID = "'.$forDel[$x].'";';
-  //     //echo $sql2;//debug code $
-  //     mysql_query($sql2);
-  //     //mysql_query($sql);
-  //     $sqlForDel[] = $sql;
-  //   //echo $forDel[$x]."|";//debug code $
-  // }
-
     mysqli_close($connection);
     ?>
 

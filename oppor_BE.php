@@ -23,26 +23,32 @@ if (!$result) {
 
 if(isset($_POST['add'])){
   // echo "add";//debug code $
+  $_SESSION['modeOpp'] = "add";
   postOpp();
 }//end if
 else if(isset($_POST['delete'])){
   // echo "delete";//debug code $
+  $_SESSION['modeOpp'] = "delete";
   deleteOpp();
 }//end else if
 else if(isSet($_POST['edit'])){
   // echo "edit";//debug code $
+  $_SESSION['modeOpp'] = "edit";
   modOpp();
 }//end else if
 else if(isSet($_POST['apply'])){
   // echo "apply";//debug code $
+  $_SESSION['modeOpp'] = "apply";
   applyOpp();
 }//end else if
 else if(isSet($_POST['drop'])){
   // echo "drop";//debug code $
+  $_SESSION['modeOpp'] = "drop";
   dropOpp();
 }//end else if
 else if(isSet($_POST['select'])){
   // echo "select";//debug code $
+  $_SESSION['modeOpp'] = "select";
     if(isset($_POST['va'])){
       if (is_array($_POST['va'])) {
         foreach($_POST['va'] as $value){

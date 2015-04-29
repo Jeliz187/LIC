@@ -1,6 +1,8 @@
 <?php
 //Start the Session
 session_start();
+//inclued
+include_once ('event_BE.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,16 +38,15 @@ if (!$result) {
   exit;
 }
 
-//echo "<p> Got Somthing</p>";//debug code $
 
 if(isset($_POST['va'])){
   if (is_array($_POST['va'])) {
     foreach($_POST['va'] as $value){
       // echo $value."+";
       $for = $value;
-    }
-  }
-}
+    }//end foreach
+  }//end if
+}//end if
 
 $sql = "SELECT * FROM Event";
 $sql2 = "SELECT * FROM Sposored_By";
@@ -72,7 +73,16 @@ $result3 = mysql_query($sql3);
         <?php }//if close ?>
       </div>
         <div class="col-md-12">
-          <form action="event2.php" method = "post">
+          <?php
+            //allows switch of form behavior beween admin and regular
+            if($_SESSION["usertype"] == "2"){
+              // echo '<form action="oppor.php" method = "post">';
+              echo '<form action="event_BE.php" method = "post">';
+            }
+            else{
+              echo '<form action="event_BE.php" method = "post">';
+            }
+            ?>
             <div class="table-responsive">
               <table class="table table-striped" style="width:auto" id="opp">
                 <thead>
@@ -92,7 +102,7 @@ $result3 = mysql_query($sql3);
                   while($row = mysql_fetch_assoc($result)){
                     echo "<tr>";
                     $eve_id =$row['E_ID'];
-                    if($_SESSION["usertype"] == "2"){//only admins can select
+                    if($_SESSION["usertype"] == "2" || $_SESSION["usertype"] == "1"){//only admins can select
                       echo "<td>".'<input type="radio" name="va[]" value="'.$eve_id.'" >'."</td>";
                     }
                     echo "<td>".$eve_id."</td>";
@@ -116,15 +126,26 @@ $result3 = mysql_query($sql3);
             </div>
             <?php if($_SESSION["usertype"] == "2"){ ?>
               <div class="row">
+                  <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary btn-block" style="width:40%" value="attend" name="attend" >attend </button>
+                  <button type="submit" class="btn btn-warning btn-block" style="width:40%" value="select" name="select" > Select </button>
+                  <button type="submit" class="btn btn-danger btn-block" style="width:40%" value="drop" name="drop" >Drop </button>
+                </div>
+                </div>
+              </form>
+            <?php
+              }//end of if
+              else {
+            ?>
+              <div class="row">
                 <div class="col-md-2">
-                  <button type="submit" class="btn btn-defalut btn-block" style="width:40%" value="select" name="select" > Select </button>
+                  <button type="submit" class="btn btn-primary btn-block" style="width:40%" value="apply" name="apply" >Apply </button>
+                  <button type="submit" class="btn btn-danger btn-block" style="width:40%" value="drop" name="drop" >Drop </button>
                 </div>
               </div>
-              <?php } ?>
             </form>
-
-            <?php
-            include_once ('event_BE.php');
+        <?php
+        }//end of else
             mysqli_close($connection);
             ?>
 

@@ -11,8 +11,6 @@ session_start();
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="pathway_style.css">
 </head>
-
-
 <?php
 include_once ('navbar.php');
 include_once ('jumbotron.php');
@@ -132,7 +130,7 @@ $etype = $row['MType'];
       <div class="row">
         <div class="col-md-6">
           <label for="country">Country of Origin:</label>
-          <select class="form-control" id="country" name = "country" value = <?php echo $cou; ?>>
+          <select class="form-control" id="country" name = "country">
             <?php include_once("country_dropdown.php"); ?>
           </select>
         </div>
@@ -277,8 +275,8 @@ $etype = $row['MType'];
       </div>
 
       <!-- Submit Button Group -->
-      <div class="row top5">
-        <div class = "col-md-3">
+      <div class="row">
+        <div class = "col-md-3s">
           <?php
           if($_SESSION["usertype"] == 2 && isset($_POST['select'])){//type 2 is admin
 
@@ -290,17 +288,18 @@ $etype = $row['MType'];
           }
           else if($_POST["Submit2"]){
             echo '<button type="submit" class="btn btn-primary" name = "edit" value="edit">Edit</button>';
+            echo '<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>';
           }
           else{
             echo '<button type="submit" class="btn btn-default" name="add" value="add">Add</button>';
           }
           ?>
-          <br>
-        </form>
+        </div>
       </div>
-    </div>
-
-
+      <br>
+    </form>
+  </div> <!--CONTAINER-->
+</div>
 
 
 <?php
@@ -310,57 +309,45 @@ if($_SESSION["usertype"] == 2){
   $result5 = mysql_query($sql5);
   if($result5->num_rows >= 0){
     ?>
-    <div class="row top30">
-      <div class = "col-md-12">
-        <form action= "manUser_BE.php" method = "POST">
-          <div class="table-responsive">
-            <table class="table table-striped" style="width:auto" id="opp">
-              <thead>
-                <tr>
-                  <th><input type="checkbox" name="everything" onClick="toggle(this)"></th>
-                  <th>Email</th>
-                  <th>Name</th>
-                  <th>Social ID</th>
-                  <th>Website</th>
-                  <th>Interest</th>
-                  <th>Organization</th>
-                  <th>Education</th>
-                  <th>Country of Origin</th>
-                  <th>DOB</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                while($row5 = mysql_fetch_assoc($result5)){
-                  echo "<tr>";
-                  $mEmail =$row5["MEmail"];
-                  echo "<td>".'<input type="checkbox" name="ve[]" value="'.$mEmail.'">'."</td>";
-                  echo "<td>".$mEmail."</td>";
-                  echo "<td>".$row5["MFname"]." ".$row["MLname"]."</td>";
-                  echo "<td>".$row5["MSocialID"]."</td>";
-                  echo "<td>".$row5["MWebsite"]."</td>";
-                  echo "<td>".$row5["MFieldofInterest"]."</td>";
-                  echo "<td>".$row5["MOrginization"]."</td>";
-                  echo "<td>".$row5["MOccupation"]."</td>";
-                  echo "<td>".$row5["MEducation"]."</td>";
-                  echo "<td>".$row5["MCountryOfOrigin"]."</td>";
-                  echo "<td>".$row5["MDateofBirth"]."</td>";
-                  echo "</tr>";
-                }
-                ?>
-              </tbody>
-            </table>
-          </div>
-          <div class="row top5">
-            <div class = "col-md-4">
-              <button type="submit" class="btn btn-primary btn-block" style="width:20%" name ="accept" value="accept">Accept</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div> <!--CONTAINER-->
-
+    <form action= "manUser_BE.php" method = "POST">
+      <table class="table table-striped" style="width:auto" id="opp">
+        <thead>
+          <tr>
+            <th><input type="checkbox" name="everything" onClick="toggle(this)"></th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Social ID</th>
+            <th>Website</th>
+            <th>Interest</th>
+            <th>Organization</th>
+            <th>Education</th>
+            <th>Country of Origin</th>
+            <th>DOB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          while($row5 = mysql_fetch_assoc($result5)){
+            echo "<tr>";
+            $mEmail =$row5["MEmail"];
+            echo "<td>".'<input type="checkbox" name="ve[]" value="'.$mEmail.'">'."</td>";
+            echo "<td>".$mEmail."</td>";
+            echo "<td>".$row5["MFname"]." ".$row["MLname"]."</td>";
+            echo "<td>".$row5["MSocialID"]."</td>";
+            echo "<td>".$row5["MWebsite"]."</td>";
+            echo "<td>".$row5["MFieldofInterest"]."</td>";
+            echo "<td>".$row5["MOrginization"]."</td>";
+            echo "<td>".$row5["MOccupation"]."</td>";
+            echo "<td>".$row5["MEducation"]."</td>";
+            echo "<td>".$row5["MCountryOfOrigin"]."</td>";
+            echo "<td>".$row5["MDateofBirth"]."</td>";
+            echo "</tr>";
+          }
+          ?>
+        </tbody>
+      </table>
+      <button type="submit" class="btn btn-primary btn-block" style="width:20%" name ="accept" value="accept">Accept</button>
+    </form>
     <?php
   }
 }
@@ -369,9 +356,6 @@ include_once ('manUser_BE.php');
 ?>
 </div>
 
-<footer class="pathway-footer top30">
-  <p><h4>Built by Pathway Inc.</h4></p>
-</footer>
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -380,4 +364,9 @@ include_once ('manUser_BE.php');
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 </body>
+
+<footer class="pathway-footer">
+  <p><h4>Built by Pathway Inc.</h4></p>
+</footer>
+
 </html>
